@@ -6,7 +6,7 @@
 #
 # @author Nikolay Dachev <nikolay@dachev.info>
 # @copyright 2022 Nikolay Dachev
-# @license BSD-3-Clause ADD GITHUB also LICENSE FILE
+# @license BSD-3-Clause
 # @link http://www.eve-ng.net/
 # @version 20220604 beta
 
