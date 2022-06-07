@@ -11,12 +11,10 @@
 # @version 20220604 beta
 
 import telnetlib
-import multiprocessing
 import argparse
 import sys
 import os
 import time
-import codecs
 
 class ros_config:
     def __init__(self, args):
@@ -126,9 +124,13 @@ class ros_config:
         # reset configuration
         tn = self.connect()
 
+        # remove default dhcp-client
+        tn.write(b"/ip dhcp-client remove numbers=0\r\n")
+        time.sleep(0.2)
+
         tn.write(b"/system reset-configuration no-defaults=yes\r\n")
-        time.sleep(3)
-        tn.write(b'y\r\n')
+        time.sleep(0.2)
+        tn.write(b"y\r\n")
         tn.close()
 
         # put new config
@@ -167,10 +169,6 @@ def arguments():
     parser.add_argument('-pwd','--password', type=str, default='',help='RouterOS login password [default: %(default)s]')
     args = parser.parse_args()
     return args
-
-def now():
-    ' Return current UNIX time in milliseconds '
-    return int(round(time.time() * 1000))
 
 # MAIN
 if __name__ == '__main__':

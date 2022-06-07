@@ -18,4 +18,12 @@ cp /opt/unetlab/scripts/config_mikrotik.py /opt/unetlab/scripts/config_mikrotik.
 cp ./scripts/config_mikrotik.py /opt/unetlab/scripts/config_mikrotik.py
 ```
 
-NOTE: Please be sure your eve-ng node is up and running before do configuration export.   
+NOTE: 
+- Please be sure your eve-ng node is up and running before do configuration export.   
+- Please be sure your eve-ng node is on login prompt before do configuration export.   
+  login with 'admin+c' is needed in order to do proper export.
+
+TODO:
+- check login before export (do logout)
+- check multiiprocesing
+- testing
