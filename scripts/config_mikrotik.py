@@ -8,7 +8,7 @@
 # @copyright 2022 Nikolay Dachev
 # @license BSD-3-Clause ADD GITHUB also LICENSE FILE
 # @link http://www.eve-ng.net/
-# @version 20220604 beta
+# @version 20220611 beta
 
 import telnetlib
 import argparse
