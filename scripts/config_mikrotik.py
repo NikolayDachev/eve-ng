@@ -8,7 +8,7 @@
 # @copyright 2022 Nikolay Dachev
 # @license BSD-3-Clause
 # @link http://www.eve-ng.net/
-# @version 20220604 beta
+# @version 20220611 beta
 
 import telnetlib
 import argparse
@@ -47,16 +47,24 @@ class ros_config:
                     tn.close()
                     sys.exit(1)
 
+        init_login = 0
         check_conn_timeout = time.time() + self.login_timeout
-        tn.write(b"\n")
+        tn.write(b"\r\n")
         while True:
             a = tn.expect([br"\.* > ", br'\.*Login:', b"assword: ", b"new password> ", b"\[Y/n\]: "], timeout=2)
             if a[0] == 0:
                 # we are login
-                tn.write(b"\n")
+                # quit if we are not login via script 'init_login = 0'
+                if init_login == 0:
+                    tn.write(b"\r\n")
+                    time.sleep(0.2)
+                    tn.write(b"/quit\r\n")
+                    continue
+                tn.write(b"\r\n")
                 break
             elif a[0] == 1:
-                # send username 
+                # send username
+                init_login = 1
                 tn.write(self.login_user.encode(self.enc) + b"\n")
             elif a[0] == 2:
                 # send password
@@ -74,7 +82,7 @@ class ros_config:
                    print("ERROR: Faile to get Console prompt after %s seconds" % self.login_timeout)
                    tn.close()
                    sys.exit(1)
-        tn.write(b"\n")
+        tn.write(b"\r\n")
         return tn
 
     def get(self):
@@ -149,6 +157,8 @@ class ros_config:
             time.sleep(0.1)
 
         time.sleep(3)
+        tn.write(b"\r\n")
+        time.sleep(0.2)
         tn.write(b"/quit\r\n")
         tn.close()
         
