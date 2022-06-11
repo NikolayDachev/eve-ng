@@ -8,7 +8,7 @@
 # @copyright 2022 Nikolay Dachev
 # @license BSD-3-Clause ADD GITHUB also LICENSE FILE
 # @link http://www.eve-ng.net/
-# @version 20220611 beta
+# @version 20220612
 
 import telnetlib
 import argparse
@@ -18,37 +18,28 @@ import time
 
 class ros_config:
     def __init__(self, args):
-        self.conn_timeout = 20
-        self.login_timeout = 20
-        self.enc = 'ascii'
-
         self.args = args
         # add '+c' to login user: fix console output
         self.login_user = self.args.user + '+c'
-
-        if self.args.action == "get":
-            self.get()
-        else:
-            self.put()
-        sys.exit(0)
-
+        self.enc = 'ascii'
+        
     def connect(self):
         tn = telnetlib.Telnet()
 
         # check if host is alive and telnet port is open
-        check_conn_timeout = time.time() + self.conn_timeout
+        check_conn_timeout = time.time() + self.args.timeout
         while True:
             try:
                 tn.open(host=self.args.ip, port=self.args.port, timeout=self.args.waitconnect)
                 break
             except ConnectionRefusedError as e:
                 if time.time() > check_conn_timeout:
-                    print("%s after %s seconds" % (e, self.conn_timeout) )
+                    print("%s after %s seconds" % (e, self.args.timeout) )
                     tn.close()
                     sys.exit(1)
 
         init_login = 0
-        check_conn_timeout = time.time() + self.login_timeout
+        check_conn_timeout = time.time() + self.args.timeout
         tn.write(b"\r\n")
         while True:
             a = tn.expect([br"\.* > ", br'\.*Login:', b"assword: ", b"new password> ", b"\[Y/n\]: "], timeout=2)
@@ -75,11 +66,9 @@ class ros_config:
             elif a[0] == 4:
                 # send n (accept license) 
                 tn.write(b"n\r\n")
-            elif a[0] == -1:
-                continue
             else:
                 if time.time() > check_conn_timeout:
-                   print("ERROR: Faile to get Console prompt after %s seconds" % self.login_timeout)
+                   print("ERROR: Faile to get Console prompt after %s seconds" % self.args.timeout)
                    tn.close()
                    sys.exit(1)
         tn.write(b"\r\n")
@@ -173,7 +162,7 @@ def arguments():
     parser.add_argument('-f','--file', type=str, help='RouterOS configuration file', required=True)
     parser.add_argument('-p','--port', type=int, help='RouterOS telnet port', required=True)
     parser.add_argument('-t','--timeout', type=int, default=30, help='Default operations timeout [default: %(default)s]')
-    parser.add_argument('-wc','--waitconnect', type=int, default=20, help='Wait to RouterOS connect timeout [default: %(default)s]')
+    parser.add_argument('-wc','--waitconnect', type=int, default=20, help='RouterOS connect interval [default: %(default)s]')
     parser.add_argument('-i','--ip', type=str, default='127.0.0.1',help='RouterOS IP address [default: %(default)s]')
     parser.add_argument('-u','--user', type=str, default='admin',help='RouterOS login username [default: %(default)s]')
     parser.add_argument('-pwd','--password', type=str, default='',help='RouterOS login password [default: %(default)s]')
@@ -182,5 +171,10 @@ def arguments():
 
 # MAIN
 if __name__ == '__main__':
-    ros_config(arguments())
+    cmd_args = arguments()
+    roscfg = ros_config(cmd_args)
+    if cmd_args.action == "get":
+        roscfg.get()
+    else:
+        roscfg.put()
     sys.exit(0)
