@@ -11,6 +11,11 @@ Tested with:
 (11 nodes): cpu:1/ram:256mb per node   
 (eve-ng): 5.0.1-11 (cpu:2/ram:16g) vm  
 
+- export all cfg
+- start all nodes with startup-confg
+- per node
+- ...
+
 How to use:
 
 ```
