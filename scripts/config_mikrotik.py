@@ -87,7 +87,7 @@ class ros_config:
         # wrtie config to file
         cfg = (cfg.split('\n'))
 
-        # remove evrething before first comment line (terminalls  bug in 6.49*)
+        # remove evrething before first comment line
         el_count = 0
         for i in cfg:
             if '#' in i:
@@ -105,7 +105,7 @@ class ros_config:
     def put(self):
         # Check if config file exist
         if not os.path.exists(self.args.file):
-            print("ERROR: config file '%s' dont exist" % self.args.file)
+            print("ERROR: config file '%s' not exist" % self.args.file)
             sys.exit(1)
 
         # Remove lock file
