@@ -3,10 +3,11 @@ This script do export/import Mikrotik RouterOS configuratin for EVE-NG
 Tested with:   
 
 - 6.39, 6.48.6
-- 6.49, 6.49.5, 6.49.6, 6.49rc2
+- 6.49, 6.49.5, 6.49.6, 6.49rc2, 6.49.6  
 - 7.21, 7.2.3
 - 7.3beta40, 7.3.1
 - 7.4beta2
+- 7.6
 
 (11 nodes): cpu:1/ram:256mb per node   
 (eve-ng): 5.0.1-11 (cpu:2/ram:16g) vm  
