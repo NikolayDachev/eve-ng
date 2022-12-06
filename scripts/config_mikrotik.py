@@ -39,6 +39,7 @@ class ros_config:
                     sys.exit(1)
 
         init_login = 0
+        init_login_retries = 0
         check_conn_timeout = time.time() + self.args.timeout
         tn.write(b"\r\n")
         while True:
@@ -56,6 +57,12 @@ class ros_config:
             elif a[0] == 1:
                 # send username
                 init_login = 1
+                # quit if we are not able to login with user/password  (self.args.login_retries)
+                if init_login_retries == self.args.login_retries:
+                   print('ERROR: Failed to login via console login prompt after %s login retries `admin pwd reset: /user/set admin password=""`' % self.args.login_retries)
+                   tn.close()
+                   sys.exit(1)
+                init_login_retries += 1
                 tn.write(self.login_user.encode(self.enc) + b"\n")
             elif a[0] == 2:
                 # send password
@@ -64,7 +71,7 @@ class ros_config:
                 # send control + c
                 tn.write(b"\x03")
             elif a[0] == 4:
-                # send n (accept license) 
+                # send n (accept license)
                 tn.write(b"n\r\n")
             else:
                 if time.time() > check_conn_timeout:
@@ -72,6 +79,8 @@ class ros_config:
                    tn.close()
                    sys.exit(1)
         tn.write(b"\r\n")
+        init_login = 0
+        init_login_retries = 0       
         return tn
 
     def get(self):
@@ -121,6 +130,16 @@ class ros_config:
         # reset configuration
         tn = self.connect()
 
+        # remove default force admin password reset (to none)
+        if self.args.force_admin_pwd_reset:
+          try:
+            tn.write(b'/user/set admin password=""\r\n')
+            time.sleep(0.2)
+            print("INFO: admin password was reset to 'None' (import config)")
+          except:
+            print("WARNING: Not able to reset admin password")
+            pass
+
         # remove default dhcp-client
         tn.write(b"/ip dhcp-client remove numbers=0\r\n")
         time.sleep(0.2)
@@ -166,6 +185,8 @@ def arguments():
     parser.add_argument('-i','--ip', type=str, default='127.0.0.1',help='RouterOS IP address [default: %(default)s]')
     parser.add_argument('-u','--user', type=str, default='admin',help='RouterOS login username [default: %(default)s]')
     parser.add_argument('-pwd','--password', type=str, default='',help='RouterOS login password [default: %(default)s]')
+    parser.add_argument('-lr','--login-retries', type=int, default=3,help='Number of max login retries [default: %(default)s]')
+    parser.add_argument('-fr','--force-admin-pwd-reset', type=bool, default=True,help='Force admin password reset on every execution [default: %(default)s]')
     args = parser.parse_args()
     return args
 
