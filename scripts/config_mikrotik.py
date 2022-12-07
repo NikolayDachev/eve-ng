@@ -47,13 +47,25 @@ class ros_config:
             if a[0] == 0:
                 # we are login
                 # quit if we are not login via script 'init_login = 0'
-                if init_login == 0:
-                    tn.write(b"\r\n")
-                    time.sleep(0.2)
+                if init_login == 0:                
+                    # remove default force admin password reset (to none)
+                    if self.args.force_admin_pwd_reset:
+                      try:
+                        tn.write(b'/user/set admin password=""\r\n')
+                        time.sleep(0.2)
+                        print("INFO: admin password was reset to 'None' (import config)")
+                      except:
+                        print("WARNING: Not able to reset admin password")
+                        pass  
+                    #tn.write(b"\r\n")
+                    #time.sleep(0.2)
                     tn.write(b"/quit\r\n")
+                    time.sleep(0.2)
                     continue
-                tn.write(b"\r\n")
-                break
+                else:
+                  tn.write(b"\r\n")
+                  time.sleep(0.2)
+                  break
             elif a[0] == 1:
                 # send username
                 init_login = 1
