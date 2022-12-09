@@ -198,7 +198,7 @@ def arguments():
     parser.add_argument('-u','--user', type=str, default='admin',help='RouterOS login username [default: %(default)s]')
     parser.add_argument('-pwd','--password', type=str, default='',help='RouterOS login password [default: %(default)s]')
     parser.add_argument('-lr','--login-retries', type=int, default=3,help='Number of max login retries [default: %(default)s]')
-    parser.add_argument('-fr','--force-admin-pwd-reset', type=bool, default=True,help='Force admin password reset on every execution [default: %(default)s]')
+    parser.add_argument('-fr','--force-admin-pwd-reset', type=bool, default=False,help='Force admin password reset [default: %(default)s]')
     args = parser.parse_args()
     return args
 
