@@ -39,7 +39,7 @@ NOTES:
   
   This script use `admin` user login via telnet(terminal) in order to make import/export .  
   If password is set the script will fail to login and will not be able to make export  
-  NOTE: If you see this error just restart ros node and remove `admin` with `/user/set admin password=""`!  
+  NOTE: You can remove `admin` password with `/user/set admin password=""`!  
 
 - Please be sure your eve-ng node is up and running before do configuration export.   
 - Script will auto set eve-ng node to login prompt before do configuration export.   
