@@ -57,14 +57,14 @@ optional arguments:
 
 ```
 
-First you should find [LAB_ID] and [NODE_ID] via EVE-NG ui
+First you should find [LAB_ID] and [NODE_ID] via EVE-NG ui  
 
-[LAB_ID] -> left panel -> Lab Details
-[NODE_ID] -> left panel -> Nodes
+[LAB_ID] -> left panel -> Lab Details  
+[NODE_ID] -> left panel -> Nodes  
 
 examples cli usage:
 
-Import Startup-Config 
+Import Startup-Config  
 
 ```
 cmd:
@@ -75,7 +75,7 @@ example:
 INFO: '/opt/unetlab/tmp/0/9665d2a8-1fa2-4a36-82fa-1dcaa3f38e5a/1/startup-config' configuration is applayed
 ```
 
-Export Startup-Config 
+Export Startup-Config  
 ```
 TODO
 ```
