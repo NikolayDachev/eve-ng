@@ -8,7 +8,7 @@
 # @copyright 2022 Nikolay Dachev
 # @license BSD-3-Clause
 # @link http://www.eve-ng.net/
-# @version 20220612
+# @version 1.0.1
 
 import telnetlib
 import argparse
@@ -194,7 +194,7 @@ def arguments():
     parser.add_argument('-p','--port', type=int, help='RouterOS telnet port', required=True)
     parser.add_argument('-t','--timeout', type=int, default=30, help='Default operations timeout [default: %(default)s]')
     parser.add_argument('-wc','--waitconnect', type=int, default=20, help='RouterOS connect interval [default: %(default)s]')
-    parser.add_argument('-i','--ip', type=str, default='127.0.0.1',help='RouterOS IP address [default: %(default)s]')
+    parser.add_argument('-i','--ip', type=str, default='127.0.0.1',help='RouterOS telnet IP address [default: %(default)s]')
     parser.add_argument('-u','--user', type=str, default='admin',help='RouterOS login username [default: %(default)s]')
     parser.add_argument('-pwd','--password', type=str, default='',help='RouterOS login password [default: %(default)s]')
     parser.add_argument('-lr','--login-retries', type=int, default=3,help='Number of max login retries [default: %(default)s]')
