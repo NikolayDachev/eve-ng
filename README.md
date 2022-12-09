@@ -1,5 +1,11 @@
 This script do export/import Mikrotik RouterOS configuratin for EVE-NG   
 
+```
+This script is not official!
+I developed it since current eve-ng (community ed.) is broken and cannot do proper statup-config import/export.
+I really hope eve-ng team will fix the official eve-ng (comm ed.) script.
+```
+
 Tested with:   
 
 - 6.39, 6.48.6
@@ -30,9 +36,11 @@ cp ./scripts/config_mikrotik.py /opt/unetlab/scripts/config_mikrotik.py
 NOTES: 
 - Please be sure you did NOT set `admin` user passsword via init setup, import script or configuration.  
   If ros is setup via winbox just cancel `new password` prompt, if is via ros cli just cancel it with `ctl+c`  
+  
   This script use `admin` user login via telnet(terminal) in order to make import/export .  
-  If password is set the script will fail to login and will not be able to make import/export which cause error `ERROR: "Failed to lock the lab (60061).`.  
-  NOTE: If you see this error just restart ros node and remove `admin` user password manually(also be sure eve-ng startup config is trun off)!  
+  If password is set the script will fail to login and will not be able to make export  
+  NOTE: `admin` password can be removed via ros cli: `/user/set admin password=""`!  
+
 - Please be sure your eve-ng node is up and running before do configuration export.   
 - Script will auto set eve-ng node to login prompt before do configuration export.   
   `login with 'admin+c' is needed in order to do proper export.  `
