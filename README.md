@@ -27,12 +27,66 @@ cp /opt/unetlab/scripts/config_mikrotik.py /opt/unetlab/scripts/config_mikrotik.
 cp ./scripts/config_mikrotik.py /opt/unetlab/scripts/config_mikrotik.py
 ```
 
+This script support several useful options (like set login user/password), however they can be used only via eve-ng node shell (not via web ui)
+
+```
+/opt/unetlab/scripts/config_mikrotik.py --help
+usage: config_mikrotik.py [-h] -a {get,put} -f FILE -p PORT [-t TIMEOUT] [-wc WAITCONNECT] [-i IP] [-u USER] [-pwd PASSWORD] [-lr LOGIN_RETRIES] [-fr FORCE_ADMIN_PWD_RESET]
+
+Configure Mirktoik RouterOS eve-ng
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a {get,put}, --action {get,put}
+                            get: Export startup configuartion and create satrtup-config
+                            put: Import satrtup-config as startup configuartion
+  -f FILE, --file FILE  RouterOS configuration file
+  -p PORT, --port PORT  RouterOS telnet port
+  -t TIMEOUT, --timeout TIMEOUT
+                        Default operations timeout [default: 30]
+  -wc WAITCONNECT, --waitconnect WAITCONNECT
+                        RouterOS connect interval [default: 20]
+  -i IP, --ip IP        RouterOS IP address [default: 127.0.0.1]
+  -u USER, --user USER  RouterOS login username [default: admin]
+  -pwd PASSWORD, --password PASSWORD
+                        RouterOS login password [default: ]
+  -lr LOGIN_RETRIES, --login-retries LOGIN_RETRIES
+                        Number of max login retries [default: 3]
+  -fr FORCE_ADMIN_PWD_RESET, --force-admin-pwd-reset FORCE_ADMIN_PWD_RESET
+                        Force admin password reset [default: False]
+
+```
+
+First you should find [LAB_ID] and [NODE_ID] via EVE-NG ui
+
+[LAB_ID] -> left panel -> Lab Details
+[NODE_ID] -> left panel -> Nodes
+
+examples cli usage:
+
+Import Startup-Config 
+
+```
+cmd:
+/opt/unetlab/scripts/config_mikrotik.py -a put -p 32769 -f /opt/unetlab/tmp/0/[LAB_ID]]/[NODE_ID]/startup-config -t 300
+
+example:
+/opt/unetlab/scripts/config_mikrotik.py -a put -p 32769 -f /opt/unetlab/tmp/0/9665d2a8-1fa2-4a36-82fa-1dcaa3f38e5a/1/startup-config -t 300 
+INFO: '/opt/unetlab/tmp/0/9665d2a8-1fa2-4a36-82fa-1dcaa3f38e5a/1/startup-config' configuration is applayed
+```
+
+Export Startup-Config 
+```
+TODO
+```
+
+
 NOTES: 
 - Please be sure you did NOT set `admin` user passsword via init setup, import script or configuration.  
   If ros is setup via winbox just cancel `new password` prompt, if is via ros cli just cancel it with `ctl+c`  
   This script use `admin` user login via telnet(terminal) in order to make import/export .  
-  If password is set the script will fail to login and will not be able to make import/export which cause error `ERROR: "Failed to lock the lab (60061).`.  
-  NOTE: If you see this error just restart ros node and remove `admin` user password manually(also be sure eve-ng startup config is trun off)!  
+  If password is set the script will fail to login and will not be able to make export
+  NOTE: If you see this error just restart ros node and remove `admin` with `/user/set admin password=""`!  
 - Please be sure your eve-ng node is up and running before do configuration export.   
 - Script will auto set eve-ng node to login prompt before do configuration export.   
   `login with 'admin+c' is needed in order to do proper export.  `
