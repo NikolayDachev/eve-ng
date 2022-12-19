@@ -2,8 +2,8 @@ This script do export/import Mikrotik RouterOS configuratin for EVE-NG
 
 ```
 This script is not official!
-I developed it since current eve-ng (community ed.) is broken and cannot do proper statup-config import/export.
-I really hope eve-ng team will fix the official eve-ng (comm ed.) script.
+I developed it since current eve-ng 5.0.1-13 (community ed.) is broken and cannot do proper statup-config import/export.
+eve-ng team promice to fix it in next release!
 ```
 
 Tested with:   
